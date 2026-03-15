@@ -1,0 +1,35 @@
+{
+  "name": "edu-portal",
+  "private": true,
+  "version": "0.0.0",
+  "packageManager": "pnpm@9.15.5",
+  "engines": {
+    "node": ">=20.11.0"
+  },
+  "scripts": {
+    "dev": "turbo run dev --parallel",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "format": "prettier -w .",
+    "format:check": "prettier -c .",
+    "clean": "rimraf .turbo **/.next **/dist **/build **/coverage"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.10",
+    "@typescript-eslint/eslint-plugin": "^7.18.0",
+    "@typescript-eslint/parser": "^7.18.0",
+    "eslint": "^8.57.1",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-react": "^7.37.4",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-unused-imports": "^3.2.0",
+    "eslint-import-resolver-typescript": "^3.6.3",
+    "prettier": "^3.3.3",
+    "rimraf": "^6.0.1",
+    "turbo": "^1.13.4",
+    "typescript": "^5.5.4"
+  }
+}

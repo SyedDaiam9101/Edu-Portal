@@ -1,0 +1,12 @@
+{
+  "name": "@edu/mobile",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "node -e \"console.log('mobile: dev script not wired yet')\"",
+    "build": "node -e \"console.log('mobile: build script not wired yet')\"",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint . --max-warnings=0",
+    "test": "node -e \"console.log('mobile: tests not wired yet')\""
+  }
+}
