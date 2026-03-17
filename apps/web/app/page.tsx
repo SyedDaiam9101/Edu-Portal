@@ -47,7 +47,7 @@ export default async function HomePage() {
 
       <p style={{ marginTop: 16 }}>
         <Link href="/admin">Admin</Link> · <Link href="/teacher">Teacher</Link> ·{' '}
-        <Link href="/login">Login</Link>
+        <Link href="/student">Student</Link> ·
       </p>
     </main>
   );

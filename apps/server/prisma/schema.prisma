@@ -38,6 +38,8 @@ model Student {
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
   deletedAt     DateTime?
+  attendances   Attendance[]
+  fees          Fee[]
 
   @@index([createdAt])
   @@index([rollNumber])
@@ -46,4 +48,43 @@ model Student {
 enum StudentStatus {
   ACTIVE
   INACTIVE
+}
+
+model Attendance {
+  id        String            @id @default(cuid())
+  date      DateTime          @default(now())
+  status    AttendanceStatus
+  studentId String
+  student   Student           @relation(fields: [studentId], references: [id])
+
+  @@index([studentId, date])
+}
+
+enum AttendanceStatus {
+  PRESENT
+  ABSENT
+  LATE
+}
+
+model Fee {
+  id          String     @id @default(cuid())
+  amount      Decimal    @db.Decimal(10, 2)
+  currency    String     @default("USD")
+  dueDate     DateTime
+  status      FeeStatus  @default(DUE)
+  paidAt      DateTime?
+  studentId   String
+  student     Student    @relation(fields: [studentId], references: [id])
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@index([studentId, dueDate])
+  @@index([studentId, status])
+}
+
+enum FeeStatus {
+  DUE
+  PAID
+  OVERDUE
+  WAIVED
 }
