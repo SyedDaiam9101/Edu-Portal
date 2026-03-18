@@ -1,5 +1,8 @@
 # 🎓 Edu Portal
+> ⚠️ **Status**: Under Active Development. v1.0 Core Features are live, but more modules are being added.
+
 A high-performance, modern School Management System (ERP) built with a **Monorepo** architecture for maximum scalability and developer experience.
+
 
 ## 🚀 Core Features (v1.0)
 - **👤 Student Management**: Full CRUD operations, roll number generation, and profile tracking.
