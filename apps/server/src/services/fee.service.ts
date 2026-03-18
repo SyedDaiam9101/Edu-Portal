@@ -34,6 +34,14 @@ export const feeService = {
     });
   },
 
+  async listUnpaidByStudent(studentId: string) {
+    return prisma.fee.findMany({
+      where: { studentId, status: { in: ['DUE', 'OVERDUE'] } },
+      orderBy: { dueDate: 'desc' },
+      select: baseSelect,
+    });
+  },
+
   async createForStudent(studentId: string, input: FeeCreateInput) {
     return prisma.fee.create({
       data: {

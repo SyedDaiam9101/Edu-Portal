@@ -12,6 +12,7 @@ model User {
   email     String   @unique
   name      String?
   role      UserRole @default(STUDENT)
+  gradeLevel String?
   passwordHash String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -88,6 +89,22 @@ enum FeeStatus {
   PAID
   OVERDUE
   WAIVED
+}
+
+model Announcement {
+  id        String               @id @default(cuid())
+  title     String
+  content   String
+  audience  AnnouncementAudience
+  createdAt DateTime             @default(now())
+
+  @@index([audience, createdAt])
+}
+
+enum AnnouncementAudience {
+  GLOBAL
+  TEACHERS
+  STUDENTS
 }
 
 model Subject {

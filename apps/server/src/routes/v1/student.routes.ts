@@ -18,6 +18,12 @@ import {
 
 export const studentRoutes: FastifyPluginAsync = async (app) => {
   app.get(
+    '/me/dashboard',
+    { preHandler: requireRole(['STUDENT']) },
+    async (request, reply) => studentController.getMeDashboard(request, reply),
+  );
+
+  app.get(
     '/',
     { preHandler: requireRole(['ADMIN', 'TEACHER', 'STUDENT']) },
     async (request, reply) => {

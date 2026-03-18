@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
 import { adminAuthHeaders } from '@/lib/serverAuth';
+import DashboardAnnouncement from '@/components/dashboard/DashboardAnnouncement';
 
 import type { AdminStatsResponse } from './types';
 
@@ -38,6 +39,8 @@ export default async function AdminDashboardPage() {
       <p style={{ marginTop: 8 }}>
         <Link href="/admin/students">Manage students</Link>
       </p>
+
+      <DashboardAnnouncement />
 
       <section
         style={{

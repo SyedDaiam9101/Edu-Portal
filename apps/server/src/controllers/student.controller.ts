@@ -1,6 +1,9 @@
 import { Prisma } from '@prisma/client';
 import type { FastifyReply, FastifyRequest } from 'fastify';
 
+import { academicService } from '../services/academic.service';
+import { examService } from '../services/exam.service';
+import { feeService } from '../services/fee.service';
 import { studentService } from '../services/student.service';
 import type { StudentCreateInput, StudentListQuery, StudentUpdateInput } from '../validators/student';
 
@@ -64,6 +67,33 @@ export const studentController = {
       return reply.status(404).send({ error: 'not_found', message: 'Student not found' });
     }
     return reply.send({ ok: true });
+  },
+
+  async getMeDashboard(request: FastifyRequest, reply: FastifyReply) {
+    const email = request.user?.email?.trim();
+    if (!email) {
+      return reply.status(404).send({ error: 'not_found', message: 'Student not found' });
+    }
+
+    const student = await studentService.getByEmail(email);
+    if (!student) {
+      return reply.status(404).send({ error: 'not_found', message: 'Student not found' });
+    }
+
+    const [gpa, results, unpaidFees] = await Promise.all([
+      examService.calculateStudentGPA(student.id),
+      academicService.listResultsByStudent(student.id),
+      feeService.listUnpaidByStudent(student.id),
+    ]);
+
+    return reply.send({
+      data: {
+        student,
+        gpa,
+        results,
+        unpaidFees,
+      },
+    });
   },
 };
 

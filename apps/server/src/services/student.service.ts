@@ -62,6 +62,16 @@ export const studentService = {
     });
   },
 
+  async getByEmail(email: string) {
+    return prisma.student.findFirst({
+      where: {
+        email: { equals: email, mode: 'insensitive' },
+        deletedAt: null,
+      },
+      select: baseSelect,
+    });
+  },
+
   async update(id: string, input: StudentUpdateInput) {
     const existing = await prisma.student.findFirst({
       where: { id, deletedAt: null },
