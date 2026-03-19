@@ -4,23 +4,22 @@
 A high-performance, modern School Management System (ERP) built with a **Monorepo** architecture for maximum scalability and developer experience.
 
 
-## 🚀 Core Features (v2.0)
+## 🚀 Core Features (v3.0)
+- **📅 Master Timetable**: Dynamic, weekly class schedules for Teachers and Students.
+- **📝 Assignment & Submission Engine**: 
+  - Teachers can post homework.
+  - Students can hand-in work directly with "URGENT" priority badges.
+  - Teachers review and grade work in a "Recent Hand-Ins" inbox.
+- **📊 Admin Analytical Hub**: 
+  - Revenue Analytics: Visual monthly charts (Mint-Green Bars) with hover tooltips.
+  - Filter by Grade: Analyze financial trends across different school levels.
 - **👤 Student Management**: Full CRUD operations, roll number generation, and profile tracking.
 - **📅 Attendance & Tracking**: Real-time attendance logging with a 14-day historical visual grid.
 - **💰 Fee Management**: Automated ledger system with payment tracking and outstanding balance calculation.
-- **🧠 Academic Engine**: 
-  - Relational Subject & Exam management.
-  - Automatic GPA calculation (4.0 Scale).
-  - Subject-grouped result cards for students.
-- **🍎 Teacher Hub**: 
-  - **Grade Isolation**: Teachers only see students in their class.
-  - **Bulk Attendance**: One-click marked entry with "Select All Present" shortcut.
-  - **Class Results**: Dedicated portal for teachers to review their students' academic standing.
-- **🎓 Student Portal**: 
-  - Personalized Dashboard: "My GPA", "My Results", and "My Fees".
-  - Secure Identity: No IDs in the URL; uses secure session-linked identity.
+- **🍎 Teacher Hub**: Grade-isolated dashboards and bulk attendance marking.
 - **📢 Announcement System**: Global and role-targeted school-wide broadcasts.
-- **🛡️ Secure Foundation**: Role-Based Access Control (RBAC) with Grade Isolation logic.
+- **🌐 Cloud Infrastructure**: Migrated from local to **PostgreSQL at db.prisma.io** for enterprise-level permanence.
+
 
 
 ## 🛠️ Tech Stack

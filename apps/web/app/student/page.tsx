@@ -3,8 +3,13 @@ import { redirect } from 'next/navigation';
 
 import { adminAuthHeaders } from '@/lib/serverAuth';
 import DashboardAnnouncement from '@/components/dashboard/DashboardAnnouncement';
+import PendingAssignments from '@/components/dashboard/PendingAssignments';
 
-import type { ExamResult, StudentDashboardResponse } from './types';
+import type {
+  ExamResult,
+  StudentAssignmentsResponse,
+  StudentDashboardResponse,
+} from './types';
 
 export const dynamic = 'force-dynamic';
 
@@ -21,6 +26,20 @@ async function getDashboard(): Promise<StudentDashboardResponse | null> {
   if (res.status === 404) return null;
   if (!res.ok) return null;
   return (await res.json()) as StudentDashboardResponse;
+}
+
+async function getAssignments(): Promise<StudentAssignmentsResponse> {
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
+  const headers = await adminAuthHeaders();
+  const res = await fetch(`${baseUrl}/v1/assignments/my`, {
+    cache: 'no-store',
+    headers,
+  });
+  if (res.status === 401 || res.status === 403) {
+    redirect('/login');
+  }
+  if (!res.ok) return { data: [] };
+  return (await res.json()) as StudentAssignmentsResponse;
 }
 
 function formatDate(value: string) {
@@ -45,7 +64,7 @@ function sortByExamDate(results: ExamResult[]) {
 }
 
 export default async function StudentDashboardPage() {
-  const payload = await getDashboard();
+  const [payload, assignments] = await Promise.all([getDashboard(), getAssignments()]);
   if (!payload) {
     return (
       <main style={{ padding: 24 }}>
@@ -70,12 +89,19 @@ export default async function StudentDashboardPage() {
             Grade {student.gradeLevel ?? '-'} {student.section ? `· Section ${student.section}` : ''}
           </p>
         </div>
-        <Link href="/student/results" style={{ textDecoration: 'none', color: '#111', fontWeight: 600 }}>
-          View Report Card
-        </Link>
+        <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+          <Link href="/student/results" style={{ textDecoration: 'none', color: '#111', fontWeight: 600 }}>
+            View Report Card
+          </Link>
+          <Link href="/student/timetable" style={{ textDecoration: 'none', color: '#111', fontWeight: 600 }}>
+            View Full Schedule
+          </Link>
+        </div>
       </div>
 
       <DashboardAnnouncement />
+
+      <PendingAssignments assignments={assignments.data} />
 
       <section
         style={{

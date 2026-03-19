@@ -16,6 +16,8 @@ model User {
   passwordHash String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  timetableEntries TimetableEntry[]
+  assignments Assignment[]
 }
 
 enum UserRole {
@@ -42,6 +44,7 @@ model Student {
   attendances   Attendance[]
   fees          Fee[]
   examResults   ExamResult[]
+  submissions   Submission[]
 
   @@index([createdAt])
   @@index([rollNumber])
@@ -107,11 +110,77 @@ enum AnnouncementAudience {
   STUDENTS
 }
 
+model TimetableEntry {
+  id         String      @id @default(cuid())
+  dayOfWeek  DayOfWeek
+  startTime  String
+  endTime    String
+  subjectId  String
+  teacherId  String
+  gradeLevel String
+  roomNumber String
+  createdAt  DateTime    @default(now())
+
+  subject Subject @relation(fields: [subjectId], references: [id])
+  teacher User    @relation(fields: [teacherId], references: [id])
+
+  @@index([gradeLevel, dayOfWeek])
+  @@index([teacherId, dayOfWeek])
+}
+
+enum DayOfWeek {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+}
+
+model Assignment {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  dueDate     DateTime
+  subjectId   String
+  teacherId   String
+  gradeLevel  String
+  createdAt   DateTime @default(now())
+
+  subject Subject @relation(fields: [subjectId], references: [id])
+  teacher User    @relation(fields: [teacherId], references: [id])
+  submissions Submission[]
+
+  @@index([gradeLevel, dueDate])
+  @@index([teacherId, dueDate])
+}
+
+model Submission {
+  id           String           @id @default(cuid())
+  assignmentId String
+  studentId    String
+  content      String
+  status       SubmissionStatus @default(PENDING)
+  createdAt    DateTime         @default(now())
+
+  assignment Assignment @relation(fields: [assignmentId], references: [id])
+  student    Student    @relation(fields: [studentId], references: [id])
+
+  @@unique([assignmentId, studentId])
+  @@index([studentId, createdAt])
+}
+
+enum SubmissionStatus {
+  PENDING
+  GRADED
+}
+
 model Subject {
   id         String  @id @default(cuid())
   name       String
   gradeLevel String
   exams      Exam[]
+  timetableEntries TimetableEntry[]
+  assignments Assignment[]
 
   @@index([gradeLevel, name])
 }

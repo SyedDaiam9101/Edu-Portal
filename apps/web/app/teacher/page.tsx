@@ -1,10 +1,16 @@
+import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
 import { adminAuthHeaders } from '@/lib/serverAuth';
 import DashboardAnnouncement from '@/components/dashboard/DashboardAnnouncement';
+import TeacherSubmissionInbox from '@/components/dashboard/TeacherSubmissionInbox';
 
 import TeacherDashboardClient from './TeacherDashboardClient';
-import type { TeacherClassListResponse, TeacherStudent } from './types';
+import type {
+  TeacherClassListResponse,
+  TeacherStudent,
+  TeacherSubmissionsResponse,
+} from './types';
 
 export const dynamic = 'force-dynamic';
 
@@ -111,12 +117,26 @@ async function getClassGpaAverage(students: TeacherStudent[], headers: Record<st
   return Math.round((total / withResults.length) * 100) / 100;
 }
 
+async function getRecentSubmissions(headers: Record<string, string>) {
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
+  const res = await fetch(`${baseUrl}/v1/submissions/teacher`, {
+    cache: 'no-store',
+    headers,
+  });
+  if (res.status === 401 || res.status === 403) {
+    redirect('/login');
+  }
+  if (!res.ok) return { data: [] } as TeacherSubmissionsResponse;
+  return (await res.json()) as TeacherSubmissionsResponse;
+}
+
 export default async function TeacherDashboardPage() {
   const headers = await adminAuthHeaders();
   const students = await getMyStudents(headers);
-  const [{ attendanceRateToday }, classGpaAverage] = await Promise.all([
+  const [{ attendanceRateToday }, classGpaAverage, submissions] = await Promise.all([
     getAttendanceStats(students, headers),
     getClassGpaAverage(students, headers),
+    getRecentSubmissions(headers),
   ]);
 
   return (
@@ -124,9 +144,14 @@ export default async function TeacherDashboardPage() {
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'baseline' }}>
         <h1 style={{ margin: 0 }}>Teacher Hub</h1>
         <span style={{ fontSize: 12, color: '#666' }}>Grade-focused command center</span>
+        <Link href="/teacher/timetable" style={{ textDecoration: 'none', color: '#111', fontWeight: 600 }}>
+          View Full Schedule
+        </Link>
       </div>
 
       <DashboardAnnouncement />
+
+      <TeacherSubmissionInbox submissions={submissions.data} />
 
       <TeacherDashboardClient
         students={students}

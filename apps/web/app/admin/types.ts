@@ -6,3 +6,10 @@ export type AdminStats = {
 };
 
 export type AdminStatsResponse = { data: AdminStats };
+
+export type RevenuePoint = {
+  month: string;
+  revenue: number;
+};
+
+export type RevenueAnalyticsResponse = { data: RevenuePoint[] };

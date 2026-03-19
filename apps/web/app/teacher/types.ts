@@ -21,3 +21,25 @@ export type TeacherClassAttendanceTodayResponse = {
     count: number;
   };
 };
+
+export type TeacherSubmission = {
+  id: string;
+  content: string;
+  status: 'PENDING' | 'GRADED';
+  createdAt: string;
+  assignment: {
+    id: string;
+    title: string;
+    dueDate: string;
+    subject: { id: string; name: string };
+  };
+  student: {
+    id: string;
+    firstName: string;
+    lastName: string;
+    rollNumber: string;
+    gradeLevel: string | null;
+  };
+};
+
+export type TeacherSubmissionsResponse = { data: TeacherSubmission[] };

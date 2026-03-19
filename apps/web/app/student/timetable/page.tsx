@@ -33,7 +33,7 @@ async function getSchedule() {
   return (await res.json()) as TimetableResponse;
 }
 
-export default async function TeacherTimetablePage() {
+export default async function StudentTimetablePage() {
   const schedule = await getSchedule();
 
   return (
@@ -41,9 +41,9 @@ export default async function TeacherTimetablePage() {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', flexWrap: 'wrap' }}>
         <div>
           <h1 style={{ margin: 0 }}>My Weekly Schedule</h1>
-          <p style={{ marginTop: 6, color: '#666' }}>Your assigned class blocks for the week.</p>
+          <p style={{ marginTop: 6, color: '#666' }}>Your class timetable for the week.</p>
         </div>
-        <Link href="/teacher" style={{ textDecoration: 'none', color: '#111', fontWeight: 600 }}>
+        <Link href="/student" style={{ textDecoration: 'none', color: '#111', fontWeight: 600 }}>
           Back to dashboard
         </Link>
       </div>

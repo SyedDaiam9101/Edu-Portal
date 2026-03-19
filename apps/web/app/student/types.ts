@@ -54,6 +54,17 @@ export type FeeRecord = {
   updatedAt: string;
 };
 
+export type Assignment = {
+  id: string;
+  title: string;
+  description: string;
+  dueDate: string;
+  gradeLevel: string;
+  subject: { id: string; name: string };
+  teacher: { id: string; name: string | null; email: string | null };
+  createdAt: string;
+};
+
 export type StudentDashboardResponse = {
   data: {
     student: StudentSummary;
@@ -61,4 +72,8 @@ export type StudentDashboardResponse = {
     results: ExamResult[];
     unpaidFees: FeeRecord[];
   };
+};
+
+export type StudentAssignmentsResponse = {
+  data: Assignment[];
 };
